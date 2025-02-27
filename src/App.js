@@ -19,18 +19,20 @@ function Board({ xIsNext, squares, onPlay }) {
   }
 
   const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = "Winner: " + winner;
-  } else if (!squares.includes(null)) {
-    status = "Draw!";
-  } else {
-    status = "Next player: " + (xIsNext ? "X" : "O");
+
+  function updateStatus() {
+    if (winner) {
+      return "Winner: " + winner;
+    } else if (!squares.includes(null)) {
+      return "Draw!";
+    } else {
+      return `Next player: ${xIsNext ? 'X' : 'O'}`;
+    }
   }
 
   return (
     <>
-      <div className="status">{status}</div>
+      <div className="status">{updateStatus()}</div>
       <div className="board-row">
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
@@ -91,13 +93,23 @@ export default function Game() {
     } else {
       description = "Go to game start";
     }
+
+    if (move === currentMove) {
+      description = "➡️ Move #" + move;
+      return (
+        <li key={move}>
+          <button className='historyButton'>{description}</button>
+        </li >
+      );
+    }
+
     return (
       <li key={move}>
-        <button onClick={() => setCurrentMove(move)}>
+        <button className='historyButton' onClick={() => setCurrentMove(move)}>
           {description}
         </button>
       </li>
-    )
+    );
   });
 
   return (
@@ -106,9 +118,9 @@ export default function Game() {
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>
+        <ul>
           {moves}
-        </ol>
+        </ul>
       </div>
     </div>
   );
