@@ -57,8 +57,9 @@ body {
 }
 
 .square {
-  background: #fff;
+  background: #ffffff;
   border: 1px solid #999;
+  border-radius: 5px;
   float: left;
   font-size: 24px;
   font-weight: bold;
@@ -80,6 +81,7 @@ body {
 .status {
   margin-bottom: 10px;
 }
+
 .game {
   display: flex;
   flex-direction: row;
