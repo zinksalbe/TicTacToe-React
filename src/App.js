@@ -1,13 +1,11 @@
 import { useState } from 'react';
+import swapIcon from "./images/swap.png";
 
 function Square({ value, onSquareClick }) {
   return <button className="square" onClick={onSquareClick}>{value}</button>;
 }
 
 function Board({ xIsNext, squares, onPlay }) {
-  // const [xIsNext, setXIsNext] = useState(true);
-  // const [squares, setSquares] = useState(Array(9).fill(null));
-  // Not needed anymore since we move this to the top level of Game
 
   function handleClick(i) {
     // return if cell is already set to a value -> don't override
@@ -30,29 +28,19 @@ function Board({ xIsNext, squares, onPlay }) {
     }
   }
 
-  function renderBoard() {
-    const boardRows = [];
-    for (let row = 0; row < 3; row++) {
-      const boardSquares = [];
-      for (let col = 0; col < 3; col++) {
-        const index = row * 3 + col;
-        boardSquares.push(
-          <Square key={index} value={squares[index]} onSquareClick={() => handleClick(index)} />
-        );
-      }
-      boardRows.push(
-        <div key={row} className="board-row">
-          {boardSquares}
-        </div>
-      );
-    }
-    return boardRows;
-  }
-
   return (
     <>
       <div className="status">{updateStatus()}</div>
-      {renderBoard()}
+      {Array(3).fill(null).map((_, row) => {
+        return (
+          <div className="board-row">
+            {Array(3).fill(null).map((_, col) => {
+              const index = row * 3 + col;
+              return <Square key={(row, col)} value={squares[index]} onSquareClick={() => handleClick(index)} />;
+            })}
+          </div>
+        );
+      })}
     </>
   );
 }
@@ -79,8 +67,8 @@ function calculateWinner(squares) {
 }
 
 export default function Game() {
-  // const [xIsNext, setXIsNext] = useState(true);
   const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [isMovesReversed, setIsMovesReversed] = useState(false);
   const [currentMove, setCurrentMove] = useState(0)
   const currentSquares = history[currentMove];
   const xIsNext = currentMove % 2 == 0;
@@ -117,16 +105,26 @@ export default function Game() {
     );
   });
 
+  const reverseHistory = () => {
+    setIsMovesReversed(!isMovesReversed);
+  };
+
   return (
-    <div className="game">
-      <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+    <>
+      <div className="game">
+        <div className="game-board">
+          <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+        </div>
+        <div className="game-info">
+          <div className='history'>
+            <ol>
+              {isMovesReversed ? moves.reverse() : moves}
+            </ol>
+            <button className="swapButton" onClick={() => reverseHistory()}><img className="swapIcon" src={swapIcon} alt="Swap Icon" /></button>
+          </div>
+          <button onClick={() => setHistory([Array(9).fill(null)], setCurrentMove(0))}>Reset</button>
+        </div>
       </div>
-      <div className="game-info">
-        <ul>
-          {moves}
-        </ul>
-      </div>
-    </div>
+    </>
   );
 }
