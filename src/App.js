@@ -81,34 +81,21 @@ export default function Game() {
   }
 
   const moves = history.map((squares, move) => {
-    let description;
-    if (move > 0) {
-      description = "Go to move #" + move;
-    } else {
-      description = "Go to game start";
-    }
-
     if (move === currentMove) {
-      description = "➡️ Move #" + move;
       return (
         <li key={move}>
-          <button className='historyButton'>{description}</button>
+          <button className='historyButton'>{"➡️ Move #" + move}</button>
         </li >
       );
     }
-
     return (
       <li key={move}>
         <button className='historyButton' onClick={() => setCurrentMove(move)}>
-          {description}
+          {`${move > 0 ? "Go to move #" + move : "Go to game start"}`}
         </button>
       </li>
     );
   });
-
-  const reverseHistory = () => {
-    setIsMovesReversed(!isMovesReversed);
-  };
 
   return (
     <>
@@ -121,9 +108,9 @@ export default function Game() {
             <ol>
               {isMovesReversed ? moves.reverse() : moves}
             </ol>
-            <button className="swapButton" onClick={() => reverseHistory()}><img className="swapIcon" src={swapIcon} alt="Swap Icon" /></button>
+            <button className="swapButton" onClick={() => setIsMovesReversed(!isMovesReversed)}><img className="swapIcon" src={swapIcon} alt="Swap Icon" /></button>
           </div>
-          <button onClick={() => setHistory([Array(9).fill(null)], setCurrentMove(0))}>Reset</button>
+          <button onClick={() => { setHistory([Array(9).fill(null)]); setCurrentMove(0); }}>Reset</button>
         </div>
       </div>
     </>
