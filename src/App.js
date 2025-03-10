@@ -81,21 +81,26 @@ export default function Game() {
   }
 
   const moves = history.map((squares, move) => {
+    const coordinates = move > 0 ? getCoordinates(squares.findIndex((val, i) => val !== history[move - 1][i])) : "";
     if (move === currentMove) {
       return (
         <li key={move}>
-          <button className='historyButton'>{"➡️ Move #" + move}</button>
+          <button className='currentButton historyButton'>{"Go to move #" + move + " " + coordinates}</button>
         </li >
       );
     }
     return (
       <li key={move}>
         <button className='historyButton' onClick={() => setCurrentMove(move)}>
-          {`${move > 0 ? "Go to move #" + move : "Go to game start"}`}
+          {`${move > 0 ? "Go to move #" + move + " " + coordinates : "Go to game start"}`}
         </button>
       </li>
     );
   });
+
+  function getCoordinates(index) {
+    return `(${Math.floor(index / 3) + 1}, ${(index % 3) + 1})`;
+  }
 
   return (
     <>
@@ -106,7 +111,7 @@ export default function Game() {
         <div className="game-info">
           <div className='history'>
             <ol>
-              {isMovesReversed ? moves.reverse() : moves}
+              {isMovesReversed ? [...moves].reverse() : moves}
             </ol>
             <button className="swapButton" onClick={() => setIsMovesReversed(!isMovesReversed)}><img className="swapIcon" src={swapIcon} alt="Swap Icon" /></button>
           </div>

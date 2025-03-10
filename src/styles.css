@@ -57,11 +57,34 @@ code {
   border-width: 1px;
 }
 
+@keyframes pulse-blue {
+  0% {
+    background-color: #4da6ff;
+    box-shadow: 0 0 5px #4da6ff;
+  }
+
+  50% {
+    background-color: #80c1ff;
+    box-shadow: 0 0 15px #80c1ff;
+  }
+
+  100% {
+    background-color: #4da6ff;
+    box-shadow: 0 0 5px #4da6ff;
+  }
+}
+
+.currentButton {
+  animation: pulse-blue 1.5s infinite;
+  transition: background-color 0.3s ease-in-out;
+}
+
+
 ol {
   margin: 0;
   padding-inline-start: 0;
   list-style-type: none;
-  width: 150px;
+  width: 200px;
 }
 
 * {
@@ -84,8 +107,25 @@ ol {
   width: 50px;
 }
 
+@keyframes pulse-green {
+  0% {
+    background-color: rgb(147, 245, 0);
+    box-shadow: 0 0 5px rgb(147, 245, 0);
+  }
+
+  50% {
+    background-color: rgb(201, 250, 144);
+    box-shadow: 0 0 15px rgb(201, 250, 144);
+  }
+
+  100% {
+    background-color: rgb(147, 245, 0);
+    box-shadow: 0 0 5px rgb(147, 245, 0);
+  }
+}
+
 .winnerSquare {
-  background-color: rgb(147, 245, 0);
+  animation: pulse-green 1.5s infinite;
 }
 
 .board-row:after {
@@ -107,7 +147,6 @@ ol {
   margin-top: 28px;
   margin-left: 20px;
   height: 340px;
-  width: 280px;
 }
 
 .history {
