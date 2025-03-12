@@ -1,17 +1,19 @@
 const { app, BrowserWindow } = require('electron')
-require('@electron/remote/main').initialize()
 
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 600,
-        height: 600,
+        height: 500,
         icon: 'src/images/tic-tac-toe (1).png',
         webPreferences: {
             enableRemoteModule: true
         }
     })
 
-    win.loadURL('http://localhost:3000')
+
+    app.isPackaged
+        ? win.loadFile(path.join(__dirname, "index.html")) // Prod
+        : win.loadURL("http://localhost:3000"); // Dev
     win.removeMenu()
 }
 
